@@ -36,8 +36,8 @@ function Article(props) {
 }
 
 function App() {
-  const _mode = useState('WELCOME');
-  console.log('_mode', _mode);
+  const [mode, setMode] = useState('WELCOME');
+  const [id, setId] = useState(null);
   const topics = [
     {id:1, title:'html', body:'html  is...'},
     {id:2, title:'css', body:'css  is...'},
@@ -47,15 +47,24 @@ function App() {
   if(mode === 'WELCOME'){
     content = <Article title="Welcome" body="Hello, WEB"></Article>
   } else if(mode === 'READ') {
-    content = <Article title="Read" body="Hello, Read"></Article>
+    let title, body = null;
+    for(let i=0; i<topics.length; i++){
+      console.log(topics[i].id, id);
+      if(topics[i].id === id) {
+        title = topics[i].title;
+        body = topics[i].body;
+      }
+    }
+    content = <Article title={title} body={body}></Article>
   }
   return (
     <div>
       <Header title="WEB" onChangeMode={()=>{
-        mode = 'WELCOME';
+        setMode('WELCOME');
       }}></Header>
-      <Nav topics={topics} onChangeMode={(id)=>{
-        mode = 'READ';
+      <Nav topics={topics} onChangeMode={(_id)=>{
+        setMode('READ');
+        setId(_id);
       }}></Nav>
       {content}
     </div>
